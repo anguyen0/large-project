@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import connectDB from './db';
+import authRouter from './routes/auth/authRoutes';
 
 // Load the env variables
 dotenv.config();
@@ -19,6 +20,9 @@ app.get('*', (req, res) => {
 
 // Parse all input as json
 app.use(express.json());
+
+// Use the auth routes
+app.use('/api/auth', authRouter);
 
 // Connect to the database
 connectDB();
