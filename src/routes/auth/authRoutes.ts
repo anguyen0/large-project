@@ -5,6 +5,7 @@ import checkForRegisterConflicts from '../../middleware/auth/checkForRegisterCon
 import verifyAccountController from '../../controllers/auth/verifyAccount';
 import loginController from '../../controllers/auth/loginController';
 import validateLoginRequest from '../../middleware/auth/validateLoginRequest';
+import requestPasswordResetController from '../../controllers/auth/requestPasswordResetController';
 
 
 const authRouter = express.Router();
@@ -12,5 +13,7 @@ const authRouter = express.Router();
 authRouter.post('/register', validateRegisterRequest, checkForRegisterConflicts, registerController);
 authRouter.get('/verify-account/:token', verifyAccountController);
 authRouter.post('/login', validateLoginRequest, loginController);
+authRouter.post('/forgot-password', requestPasswordResetController);
+//authRouter.post('/reset-password/:token', resetPasswordController);
 
 export default authRouter;
