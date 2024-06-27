@@ -7,6 +7,8 @@ import loginController from '../../controllers/auth/loginController';
 import validateLoginRequest from '../../middleware/auth/validateLoginRequest';
 import requestPasswordResetController from '../../controllers/auth/requestPasswordResetController';
 import validateForgotPasswordRequest from '../../middleware/auth/validateForgotPasswordRequest';
+import resetPasswordController from '../../controllers/auth/resetPasswordController';
+import validateResetPasswordRequest from '../../middleware/auth/validateResetPasswordRequest';
 
 
 const authRouter = express.Router();
@@ -15,6 +17,6 @@ authRouter.post('/register', validateRegisterRequest, checkForRegisterConflicts,
 authRouter.get('/verify-account/:token', verifyAccountController);
 authRouter.post('/login', validateLoginRequest, loginController);
 authRouter.post('/forgot-password', validateForgotPasswordRequest, requestPasswordResetController);
-//authRouter.post('/reset-password/:token', resetPasswordController);
+authRouter.post('/reset-password', validateResetPasswordRequest, resetPasswordController);
 
 export default authRouter;
