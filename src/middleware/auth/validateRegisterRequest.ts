@@ -1,26 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { check, validationResult } from 'express-validator';
 
-export interface InputErrorInterface {
-
-    message: string;
-
-};
-
-type InputErrors = InputErrorInterface[];
-
-export interface ErrorResponseInterface {
-
-    message: {
-        [field_name: string]: InputErrors;
-    }
-
-};
-
-export interface InputRequestInterface extends Request {
-    input_errors?: ErrorResponseInterface;
-};
-
 const validateRegisterRequest = [
 
     check('first_name')
@@ -71,7 +51,7 @@ const validateRegisterRequest = [
     (req:Request, res:Response, next:NextFunction) => {
 
         const errors = validationResult(req);
-        const response_body:ErrorResponseInterface = { message: {} };
+        const validation_errors: { [field_name: string]: string[] } = {};
 
         if(!errors.isEmpty()) {
             
@@ -79,22 +59,20 @@ const validateRegisterRequest = [
 
                 if('path' in error) {
 
-                    if(!response_body.message[error.path]) {
-                        response_body.message[error.path] = [];
+                    if(!validation_errors[error.path]) {
+                        validation_errors[error.path] = [];
                     }
 
-                    response_body.message[error.path].push({
-                        message: error.msg
-                    });
+                    validation_errors[error.path].push(error.msg);
 
                 }
 
             });
 
             // Return validation error if any
-            if(Object.keys(response_body.message).length > 0) {
+            if(Object.keys(validation_errors).length > 0) {
 
-                return res.status(400).json(response_body);
+                return res.status(400).json({validation_errors});
 
             }
 
