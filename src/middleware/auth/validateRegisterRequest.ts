@@ -72,7 +72,9 @@ const validateRegisterRequest = [
             // Return validation error if any
             if(Object.keys(validation_errors).length > 0) {
 
-                return res.status(400).json({validation_errors});
+                return res.status(400).json({
+                    validation_errors:validation_errors
+                });
 
             }
 
