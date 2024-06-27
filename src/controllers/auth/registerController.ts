@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../../models/UserModel';
 import hashPassword, { HashingError } from '../../utils/hashPassword';
+import sendVerifyEmail from '../../utils/sendVerifyEmail';
 
 export interface RegisterRequestBody extends Request {
 
@@ -28,6 +29,9 @@ const registerController = async (req:Request, res:Response) => {
 
         // Save the new user to the database
         await user.save();
+
+        // Send a verify account email
+        await sendVerifyEmail(email, user.id);
 
         // Return success message
         return res.status(201).json({
