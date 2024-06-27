@@ -1,55 +1,33 @@
-import dotenv from 'dotenv';
 import express from 'express';
+import dotenv from 'dotenv';
 import path from 'path';
-import { logger } from './logs/logger';
-import connect from './db/connect';
-import authRouter from './routes/authRouter';
+import connectDB from './db';
 
-// Load environment variables 
+// Load the env variables
 dotenv.config();
 
-const app  = express();
-const PORT = process.env.PORT as string;
+// Create a instance of the express app
+const app = express();
 
-const startServer = async () => {
+// Serve the react frontend code on the server
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
-    try {
+// Catch-all route to serve React's index.html for client-side routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
 
-        // Create a connection to the database
-        await connect();
+// Parse all input as json
+app.use(express.json());
 
-        // Parse request body as JSON
-        app.use(express.json());
+// Connect to the database
+connectDB();
 
-        // Serve the React Frontend
-        app.use(express.static(path.join(__dirname, '../client/dist')));
+// Start listening on the port
+const port = process.env.PORT;
 
-        // Catch-all route to serve React's index.html for client-side routing
-        app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-        });
+app.listen(port, () => {
 
-        // Define API routes and other middleware
-        app.use('/api/auth', authRouter);
-
-        // Start the server
-        app.listen(PORT, () => {
-
-            logger('INFO', `Server is listening on port ${PORT}`, true);
-        
-        });
-
-    }
-    catch(error) {
-
-        logger('ERROR', `Failed to start server: ${error}`, true);
-
-    }
-
-};
-
-startServer().catch(error => {
-
-    logger('ERROR', `Unhandled error during server start up: ${error}`, true);
+    console.log(`Listening on port ${port}`);
 
 });
