@@ -13,16 +13,16 @@ const app = express();
 // Serve the react frontend code on the server
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
-// Catch-all route to serve React's index.html for client-side routing
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-});
-
 // Parse all input as json
 app.use(express.json());
 
 // Use the auth routes
 app.use('/api/auth', authRouter);
+
+// Catch-all route to serve React's index.html for client-side routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
 
 // Connect to the database
 connectDB();
