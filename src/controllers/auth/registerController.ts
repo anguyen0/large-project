@@ -3,6 +3,7 @@ import { request_logger } from '../../logs/logger';
 import bcrypt from 'bcrypt';
 import User from '../../models/UserModel';
 import hashPassword from '../../utils/hashPassword';
+import sendVerifyEmail from '../../utils/sendVerifyEmail';
 
 const registerController = async (req:Request, res:Response):Promise<any> => {
 
@@ -17,6 +18,9 @@ const registerController = async (req:Request, res:Response):Promise<any> => {
         // Create new user
         const user = new User({first_name, last_name, email, username, password:hash});
         await user.save();
+
+        // Send a verify email
+        await sendVerifyEmail(user.id, email);
 
         return res.status(201).json({
             message: 'User registered successfully'
