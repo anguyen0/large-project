@@ -1,5 +1,10 @@
+# Folders
 node_modules
 dist
+build
+vscode
 
+# Files
 .env
 *.log
+.DS_Store
