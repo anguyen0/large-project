@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import User from '../models/User';
+import sendVerifyEmail from '../services/sendVerifyEmail';
 
 export default async function registerController(req: Request, res: Response) {
   try {
@@ -21,6 +22,9 @@ export default async function registerController(req: Request, res: Response) {
 
     // Save the new user to the db
     await user.save();
+
+    // Send a verify account email
+    await sendVerifyEmail(email, user.id);
 
     res.status(200).json({
       timestamp: Date.now(),
