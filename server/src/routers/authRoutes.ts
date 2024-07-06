@@ -1,6 +1,6 @@
 import express from 'express';
 import registerController from '../controllers/registerController';
-import { sanitizeRegisterInput } from '../middleware/registerInput';
+import { sanitizeRegisterInput } from '../middleware/registerInputValidation';
 
 const authRouter = express.Router();
 
