@@ -92,6 +92,13 @@ export const validateRegisterInput = [
       'Username can only contain letters, numbers, and underscores. The first character cannot be a number.'
     ),
 
+  // Validate the user's email input
+  body('email')
+    .trim()
+    .normalizeEmail()
+    .isEmail()
+    .withMessage('Invalid email address format'),
+
   // Validate the user's password input
   body('password')
     .trim()
