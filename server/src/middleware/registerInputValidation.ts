@@ -129,12 +129,31 @@ export const validateRegisterInput = [
     next: NextFunction
   ) => {
     const valdationErrors = validationResult(req);
-    const errors: ErrorResponse = {
-      timestamp: Date.now(),
-      message: 'Validation Errors',
-      code: 400,
-      fields: {},
-    };
+
+    if (!valdationErrors.isEmpty()) {
+      const errorResponse: ErrorResponse = {
+        timestamp: Date.now(),
+        message: 'Validation Errors',
+        code: 400,
+        fields: {},
+      };
+
+      // Loop through each error and add it to the appropriate field in the error response
+      valdationErrors.array().forEach((error) => {
+        if ('path' in error) {
+          if (!errorResponse.fields[error.path]) {
+            errorResponse.fields[error.path] = [];
+          }
+
+          errorResponse.fields[error.path].push(error.msg);
+        }
+      });
+
+      // If any validation errors occured return a error response
+      if (Object.keys(errorResponse.fields).length > 0) {
+        return res.status(400).json(errorResponse);
+      }
+    }
 
     next();
   },
