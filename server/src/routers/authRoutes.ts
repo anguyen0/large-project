@@ -4,6 +4,7 @@ import {
   sanitizeRegisterInput,
   validateRegisterInput,
 } from '../middleware/registerInputValidation';
+import userConflict from '../middleware/userConflict';
 
 const authRouter = express.Router();
 
@@ -15,6 +16,7 @@ authRouter.post(
   '/register',
   sanitizeRegisterInput,
   validateRegisterInput,
+  userConflict,
   registerController
 );
 
