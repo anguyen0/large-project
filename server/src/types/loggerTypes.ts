@@ -8,7 +8,12 @@ export interface RequestDetails {
 
 export type LogType = 'INFO' | 'DEBUG' | 'ERROR';
 
+// Updated LoggerFunction type
 export type LoggerFunction = {
-  (type: LogType, message: string): void;
-  (type: LogType, message: string, details: RequestDetails): void;
+  (
+    type: LogType,
+    message: string,
+    details?: RequestDetails,
+    logToConsole?: boolean
+  ): void;
 };
