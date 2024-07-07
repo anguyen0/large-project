@@ -5,6 +5,7 @@ import {
   validateRegisterInput,
 } from '../middleware/registerInputValidation';
 import userConflict from '../middleware/userConflict';
+import verifyAccountController from '../controllers/verifyAccountController';
 
 const authRouter = express.Router();
 
@@ -19,5 +20,7 @@ authRouter.post(
   userConflict,
   registerController
 );
+
+authRouter.get('/verify-account/:validationToken', verifyAccountController);
 
 export default authRouter;

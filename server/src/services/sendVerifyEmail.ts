@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import * as nodemailer from 'nodemailer';
+import createVerificationToken from './createVerficationToken';
 
 export default function sendVerifyEmail(
   email: string,
@@ -25,6 +26,11 @@ export default function sendVerifyEmail(
       },
     });
 
+    // Construct verify email link
+    const verification_token = createVerificationToken(user_id, email, 15);
+    const base_url = process.env.BASE_URL as string;
+    const verify_link = `${base_url}/api/auth/verify-account/${verification_token}`;
+
     // Construct the verify account email
     const mailOptions = {
       from: host,
@@ -32,7 +38,7 @@ export default function sendVerifyEmail(
       subject: 'Verify InScribe Social Account',
       html: `
         <h1>Verify your InScribe Social Account</h1>
-        <p>Click the link to verify your account: <a href='http://www.google.com'>Verify</a></p>
+        <p>Click the link to verify your account: <a href='${verify_link}'>Verify</a></p>
         <p>This link will expire in 15 minutes. If you need a new link request a new link here: <a href='http://www.google.com'>New Verify Email</a></p>
 
     `,
