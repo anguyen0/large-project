@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import logger from './utils/logger.util';
 import mongoose from 'mongoose';
+import authRouter from './routes/auth.route';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -13,6 +14,7 @@ const app: Express = express();
 app.use(express.json());
 
 // Routes
+app.use('api/auth', authRouter);
 
 // Database connections
 const MONGO_URI = process.env.MONGO_URI as string;
