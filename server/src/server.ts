@@ -14,7 +14,7 @@ const app: Express = express();
 app.use(express.json());
 
 // Routes
-app.use('api/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 // Database connections
 const MONGO_URI = process.env.MONGO_URI as string;
