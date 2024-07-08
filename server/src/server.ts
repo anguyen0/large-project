@@ -17,15 +17,15 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 
 // Database connections
-const MONGO_URI = process.env.MONGO_URI as string;
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    logger('INFO', `Connected to MongoDB`, undefined, true);
-  })
-  .catch((error) => {
-    logger('ERROR', error, undefined, true);
-  });
+// const MONGO_URI = process.env.MONGO_URI as string;
+// mongoose
+//   .connect(MONGO_URI)
+//   .then(() => {
+//     logger('INFO', `Connected to MongoDB`, undefined, true);
+//   })
+//   .catch((error) => {
+//     logger('ERROR', error, undefined, true);
+//   });
 
 // Start the server
 const PORT: number = parseInt(process.env.PORT as string, 10) || 5000;
