@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import logger from './utils/logger.util';
+import mongoose from 'mongoose';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -14,6 +15,15 @@ app.use(express.json());
 // Routes
 
 // Database connections
+const MONGO_URI = process.env.MONGO_URI as string;
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+    logger('INFO', `Connected to MongoDB`, undefined, true);
+  })
+  .catch((error) => {
+    logger('ERROR', error, undefined, true);
+  });
 
 // Start the server
 const PORT: number = parseInt(process.env.PORT as string, 10) || 5000;
