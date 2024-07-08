@@ -1,8 +1,8 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
-import logger from './utils/logger.util';
+import logger from './utils/logger';
 import mongoose from 'mongoose';
-import authRouter from './routes/auth.route';
+import authRouter from './routes/authRoutes';
 
 // Load environment variables from .env file
 dotenv.config();

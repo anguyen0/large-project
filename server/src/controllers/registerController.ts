@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
-import {
-  RegisterFields,
-  RegisterResponse,
-} from '../types/registerRequest.type';
-import { UserDocument } from '../types/User.type';
-import { User } from '../models/User.model';
+import { RegisterFields, RegisterResponse } from '../types/registerRequest';
+import { UserDocument } from '../types/User';
+import { User } from '../models/User';
 import bcrpyt from 'bcrypt';
-import logger from '../utils/logger.util';
+import logger from '../utils/logger';
+import sendVerifyEmail from '../services/sendVerifyEmail';
 
 const registerController = async (
   req: Request,
@@ -66,6 +64,7 @@ const registerController = async (
     await user.save();
 
     // Send a verify email to the new user
+    await sendVerifyEmail(user.id, user.email, 15);
 
     // Return success message
     const response: RegisterResponse = {

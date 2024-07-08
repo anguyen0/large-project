@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { UserDocument, UserModel } from '../types/User.type';
+import { UserDocument, UserModel } from '../types/User';
 
 const UserSchema = new Schema<UserDocument>({
   first_name: { type: String, required: true },
