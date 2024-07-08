@@ -6,6 +6,7 @@ import {
 import { UserDocument } from '../types/User.type';
 import { User } from '../models/User.model';
 import bcrpyt from 'bcrypt';
+import logger from '../utils/logger.util';
 
 const registerController = async (
   req: Request,
@@ -75,7 +76,21 @@ const registerController = async (
 
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(500).json({});
+    logger(
+      'ERROR',
+      `Something went wrong while registering a new user: ${error}`,
+      undefined,
+      true
+    );
+
+    const response: RegisterResponse = {
+      timestamp: Date.now(),
+      message: 'Internal Server Error',
+      code: 500,
+      errors: [],
+    };
+
+    return res.status(500).json(response);
   }
 };
 
