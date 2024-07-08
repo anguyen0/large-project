@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import nodemailer, { SentMessageInfo, Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { DecodedToken } from '../types/verifyAccountTypes';
 
 const sendVerifyEmail = async (
   userId: mongoose.Types.ObjectId,
@@ -12,7 +13,7 @@ const sendVerifyEmail = async (
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + (expiresInMinutes + 60);
 
-  const payload: any = {
+  const payload: DecodedToken = {
     userId: userId,
     email: email,
     iat: iat,
